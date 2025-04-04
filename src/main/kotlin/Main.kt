@@ -2,7 +2,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 fun main() {
-    val runner: Runner = ObserveOn()
+    val runner: Runner = SubscribeOnMultiple()
     runner.run()
 }
 
@@ -20,6 +20,10 @@ class ObserveOn : Runner {
             .observeOn(Schedulers.io())
             .flatMap {
                 Single.just(it * 3)
+            }
+            .observeOn(Schedulers.computation())
+            .flatMap {
+                Single.just(it * 4)
             }
             .subscribe({
                 println(it)
